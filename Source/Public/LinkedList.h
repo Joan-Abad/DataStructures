@@ -40,7 +40,7 @@ public:
 		Node<Type>* node = headNode;
 		int i = 0; 
 		
-		while (node != nullptr)
+		while (node)
 		{
 			std::cout << "Node " << i << ": " << node->value << std::endl;
 			node = node->GetNextNode();
@@ -54,11 +54,42 @@ public:
 		size_t size = 0;
 		Node<Type>* node = headNode;
 
-		while (node != nullptr)
+		while (node)
 		{
 			size++;
 			node = node->GetNextNode();
 		}
 		return size; 
+	}
+
+	Type SumOfAllElements()
+	{
+		Type returnValue = 0;
+		Node<Type>* node = headNode;
+
+		while (node)
+		{
+			returnValue += node->value;
+			node = node->GetNextNode();
+		}
+
+		return returnValue;
+	}
+
+	Type GetMaximumValue()
+	{
+		Node<Type>* node = headNode;
+		Type returnValue = node->value;
+
+
+		while (node)
+		{
+			if (returnValue < node->value)
+				returnValue = node->value;
+
+			node = node->GetNextNode();
+		}
+
+		return returnValue;
 	}
 };
