@@ -95,7 +95,7 @@ public:
 	}
 
 	//Checks if a specific value is on the Linked List. 
-	bool HasValue(Type ValueToSearch)
+	bool HasValue(const Type& ValueToSearch)
 	{
 		Node<Type>* node = headNode;
 
@@ -110,7 +110,7 @@ public:
 		return false; 
 	}
 	//Searches for the first node that has the parameter value and returns it if any. 
-	Node<Type>* SearchNode(Type ValueToSearch)
+	Node<Type>* SearchNode(const Type& ValueToSearch)
 	{
 		Node<Type>* intNode = headNode;
 
@@ -127,7 +127,7 @@ public:
 
 	//Searches for the note associated with that value, and it puts it at the top of the linked list for quicker future access
 	//This uses a MoveToHead metodology
-	Node<Type>* SearchNodeMTH(Type ValueToSearch)
+	Node<Type>* SearchNodeMTH(const Type &ValueToSearch)
 	{
 		int i = 1; 
 		Node<Type>* intNode = headNode;
@@ -151,5 +151,39 @@ public:
 		}
 
 		return nullptr;
+	}
+
+	//Insert a new node to the pos and with its Value. Returns if could insert it or not. Won't add it if the position is not available
+	bool Insert(unsigned int pos, const Type& Value)
+	{
+		// insert at pos 0
+		if (pos == 0)
+		{
+			Node<Type>* newNode = new Node<Type>(Value);
+			newNode->NextNode = headNode;
+			headNode = newNode;
+			return true;
+		}
+		else
+		{
+			unsigned int NodeCount = 0; 
+			
+			Node<Type>* intNode = headNode;
+			
+			while (intNode)
+			{
+				NodeCount++;
+				if (NodeCount == pos)
+				{
+					Node<Type>* newNode = new Node<Type>(Value);
+					Node<Type>* followingNode = intNode->GetNextNode();
+					intNode->NextNode = newNode;
+					newNode->NextNode = followingNode;
+					return true;
+				}
+				intNode = intNode->GetNextNode();
+			}
+		}
+		return false; 
 	}
 };
