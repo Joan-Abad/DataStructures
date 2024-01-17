@@ -145,6 +145,24 @@ public:
 		return false;
 	}
 
+	//Returns if the list is sorted
+	bool IsSorted() 
+	{
+		Node<Type>* q = headNode;
+		Node<Type>* p = headNode->GetNextNode();
+		
+		while (p)
+		{
+			if (q->GetNodeValue() > p->GetNodeValue())
+				return false;
+
+			q = p;
+			p = p->GetNextNode();
+		}
+
+		return true; 
+	}
+
 	//Display the content of the nodes
 	void Display()
 	{
