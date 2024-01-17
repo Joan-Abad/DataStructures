@@ -99,7 +99,7 @@ public:
 		Node<Type>* p = headNode;
 		Node<Type>* q = nullptr;
 
-		while (p && p->GetNodeValue() < value)
+		while (p && p->GetNodeValue() <= value)
 		{
 			q = p;
 			p = p->GetNextNode();
@@ -116,6 +116,7 @@ public:
 			q->NextNode = newNode;
 	}
 
+	//Deletes a value at a specific index starting by 0
 	bool Delete(const unsigned int index)
 	{
 		Node<Type>* p = headNode;
@@ -163,6 +164,36 @@ public:
 		return true; 
 	}
 
+	//Removes all nodes that have the specified value
+	void RemoveAllDuplicates(const Type& value)
+	{
+		Node<Type>* p = headNode;
+		Node<Type>* q = nullptr;
+
+		while (p)
+		{
+			if (p->GetNodeValue() == value)
+			{
+				if (q) {
+					q->NextNode = p->GetNextNode();
+					delete p;
+					p = q->GetNextNode();
+				}
+				else {
+					// Special case if the duplicate is at the head
+					headNode = p->GetNextNode();
+					delete p;
+					p = headNode;
+				}
+			}
+			else
+			{
+				q = p;
+				p = p->GetNextNode();
+			}
+		}
+	}
+
 	//Display the content of the nodes
 	void Display()
 	{
@@ -171,7 +202,7 @@ public:
 		
 		while (node)
 		{
-			std::cout << "Node " << i << ": " << node->value << std::endl;
+			std::cout << "Node " << i << ": " << node->value << " pointing to " << node->GetNextNode() << std::endl;
 			node = node->GetNextNode();
 			i++;
 		}
