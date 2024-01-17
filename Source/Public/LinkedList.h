@@ -93,6 +93,30 @@ public:
 		return false;
 	}
 
+	//The value will be added in a sorted list in its corresponding position. > operator must be defined on the type
+	void InsertOnSortedList(const Type& value)
+	{
+		Node<Type>* p = headNode;
+		Node<Type>* q = nullptr;
+
+		while (p && p->GetNodeValue() < value)
+		{
+			q = p;
+			p = p->GetNextNode();
+		}
+
+		//If has a previous element, update 
+		Node<Type>* newNode = new Node<Type>(value);
+		newNode->NextNode = p;
+
+		if (p == headNode)
+			headNode = newNode;
+
+		if (q)
+			q->NextNode = newNode;
+
+	}
+
 	//Display the content of the nodes
 	void Display()
 	{
