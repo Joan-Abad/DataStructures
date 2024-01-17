@@ -20,18 +20,77 @@ template<typename Type>
 class LinkedList
 {
 private: 
-	Node<Type>* headNode; 
+	Node<Type>* headNode;
+	Node<Type>* lastNode;
 
 public: 
-	LinkedList() : headNode(nullptr) {};
+	LinkedList() : headNode(nullptr), lastNode(nullptr) {};
 	
 	//Add a node at the front of the list
-	void push_front(Type type)
+	void push_front(const Type& type)
 	{
 		//Create new node
 		Node<Type>* newNode = new Node<Type>(type);
 		newNode->NextNode = headNode;
 		headNode = newNode;
+
+		if (!lastNode)
+			lastNode = newNode;
+	}
+
+	//Adds a new value at the end of the list
+	void push_back(const Type& type)
+	{
+		//Create new node
+		Node<Type>* newNode = new Node<Type>(type);
+		newNode->NextNode = nullptr;
+
+		if (lastNode)
+			lastNode->NextNode = newNode;
+
+		lastNode = newNode;
+	}
+
+	//Insert a new node to the pos and with its Value. Returns if could insert it or not. Won't add it if the position is not available
+	bool Insert(unsigned int pos, const Type& Value)
+	{
+		// insert at pos 0
+		if (pos == 0)
+		{
+			Node<Type>* newNode = new Node<Type>(Value);
+			newNode->NextNode = headNode;
+			headNode = newNode;
+
+			if (!lastNode)
+				lastNode = newNode;
+
+			return true;
+		}
+		else
+		{
+			unsigned int NodeCount = 0;
+
+			Node<Type>* intNode = headNode;
+
+			while (intNode)
+			{
+				NodeCount++;
+				if (NodeCount == pos)
+				{
+					Node<Type>* newNode = new Node<Type>(Value);
+					Node<Type>* followingNode = intNode->GetNextNode();
+					intNode->NextNode = newNode;
+					newNode->NextNode = followingNode;
+
+					if (!newNode->GetNextNode())
+						lastNode = newNode;
+
+					return true;
+				}
+				intNode = intNode->GetNextNode();
+			}
+		}
+		return false;
 	}
 
 	//Display the content of the nodes
@@ -151,39 +210,5 @@ public:
 		}
 
 		return nullptr;
-	}
-
-	//Insert a new node to the pos and with its Value. Returns if could insert it or not. Won't add it if the position is not available
-	bool Insert(unsigned int pos, const Type& Value)
-	{
-		// insert at pos 0
-		if (pos == 0)
-		{
-			Node<Type>* newNode = new Node<Type>(Value);
-			newNode->NextNode = headNode;
-			headNode = newNode;
-			return true;
-		}
-		else
-		{
-			unsigned int NodeCount = 0; 
-			
-			Node<Type>* intNode = headNode;
-			
-			while (intNode)
-			{
-				NodeCount++;
-				if (NodeCount == pos)
-				{
-					Node<Type>* newNode = new Node<Type>(Value);
-					Node<Type>* followingNode = intNode->GetNextNode();
-					intNode->NextNode = newNode;
-					newNode->NextNode = followingNode;
-					return true;
-				}
-				intNode = intNode->GetNextNode();
-			}
-		}
-		return false; 
 	}
 };
