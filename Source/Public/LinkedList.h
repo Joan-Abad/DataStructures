@@ -114,7 +114,35 @@ public:
 
 		if (q)
 			q->NextNode = newNode;
+	}
 
+	bool Delete(const unsigned int index)
+	{
+		Node<Type>* p = headNode;
+		Node<Type>* q = nullptr;
+		unsigned int internalIndex = 0;
+		while (p)
+		{
+			if (index == 0)
+				headNode = p->GetNextNode();
+
+			if (index == internalIndex)
+			{
+				if(q)
+					q->NextNode = p->GetNextNode();
+
+				if (p == lastNode)
+					lastNode = q;
+
+				delete p;
+				return true;
+			}
+
+			q = p;
+			p = p->GetNextNode();
+			internalIndex++;
+		}
+		return false;
 	}
 
 	//Display the content of the nodes
