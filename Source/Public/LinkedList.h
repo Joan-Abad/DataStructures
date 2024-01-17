@@ -21,10 +21,9 @@ class LinkedList
 {
 private: 
 	Node<Type>* headNode;
-	Node<Type>* lastNode;
 
 public: 
-	LinkedList() : headNode(nullptr), lastNode(nullptr) {};
+	LinkedList() : headNode(nullptr) {};
 	
 	//Add a node at the front of the list
 	void push_front(const Type& type)
@@ -33,9 +32,6 @@ public:
 		Node<Type>* newNode = new Node<Type>(type);
 		newNode->NextNode = headNode;
 		headNode = newNode;
-
-		if (!lastNode)
-			lastNode = newNode;
 	}
 
 	//Adds a new value at the end of the list
@@ -44,11 +40,6 @@ public:
 		//Create new node
 		Node<Type>* newNode = new Node<Type>(type);
 		newNode->NextNode = nullptr;
-
-		if (lastNode)
-			lastNode->NextNode = newNode;
-
-		lastNode = newNode;
 	}
 
 	//Insert a new node to the pos and with its Value. Returns if could insert it or not. Won't add it if the position is not available
@@ -60,9 +51,6 @@ public:
 			Node<Type>* newNode = new Node<Type>(Value);
 			newNode->NextNode = headNode;
 			headNode = newNode;
-
-			if (!lastNode)
-				lastNode = newNode;
 
 			return true;
 		}
@@ -81,9 +69,6 @@ public:
 					Node<Type>* followingNode = intNode->GetNextNode();
 					intNode->NextNode = newNode;
 					newNode->NextNode = followingNode;
-
-					if (!newNode->GetNextNode())
-						lastNode = newNode;
 
 					return true;
 				}
@@ -131,9 +116,6 @@ public:
 			{
 				if(q)
 					q->NextNode = p->GetNextNode();
-
-				if (p == lastNode)
-					lastNode = q;
 
 				delete p;
 				return true;
@@ -283,6 +265,39 @@ public:
 		}
 
 		return nullptr; 
+	}
+
+	//Reverses the whole linked list
+	void Reverse()
+	{
+		Node<Type>* p = headNode;
+		Node<Type>* q = nullptr;
+		Node<Type>* r = nullptr;
+
+		while (p)
+		{
+			r = q;
+			q = p;
+			p = p->GetNextNode();
+			q->NextNode = r; 
+		}
+
+		headNode = q;
+	}
+
+	//Joins two linked list in a single linked list
+	void Concatenate(LinkedList<Type>& linkedListToConcatenate)
+	{
+		Node<Type>* currentNode = headNode;
+		while (currentNode)
+		{
+			if (!currentNode->GetNextNode())
+			{
+				currentNode->NextNode = linkedListToConcatenate.headNode;
+				return;
+			}
+			currentNode = currentNode->GetNextNode();
+		}
 	}
 
 	//Searches for the note associated with that value, and it puts it at the top of the linked list for quicker future access
