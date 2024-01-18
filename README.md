@@ -1,2 +1,2 @@
 # DataStructures
-Common Data Structure Library implementation
+Own Common Data Structure Library implementation
