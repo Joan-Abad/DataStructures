@@ -2,25 +2,26 @@
 #include <iostream>
 
 template<typename Type>
-class Node
+class LinkedListNode
 {
 	template <typename Type>
 	friend class LinkedList;
 private: 
-	Node<Type>* NextNode; 
+	LinkedListNode* NextNode;
 	Type value; 
 public:
-	Node(Type NodeValue) : NextNode(nullptr), value(NodeValue) {}
+	LinkedListNode(const Type& NodeValue) : NextNode(nullptr), value(NodeValue) {}
 
 	Type GetNodeValue() const { return value;  };
-	Node<Type>* GetNextNode() const { return NextNode; };
+	LinkedListNode* GetNextNode() const { return NextNode; };
 };
 
 template<typename Type>
 class LinkedList
 {
+	using Node = LinkedListNode<Type>;
 private: 
-	Node<Type>* headNode;
+	Node* headNode;
 
 public: 
 	LinkedList() : headNode(nullptr) {};
@@ -28,10 +29,10 @@ public:
 	//Clears all the memory of the nodes allocated on the heap when this object is destroyed
 	~LinkedList()
 	{
-		Node<Type>* node = headNode;
+		Node* node = headNode;
 		while (node)
 		{
-			Node<Type>* tempNode = node->GetNextNode(); 
+			Node* tempNode = node->GetNextNode(); 
 			delete node; 
 			node = tempNode; 			
 		}
@@ -41,7 +42,7 @@ public:
 	void push_front(const Type& type)
 	{
 		//Create new node
-		Node<Type>* newNode = new Node<Type>(type);
+		Node* newNode = new Node(type);
 		newNode->NextNode = headNode;
 		headNode = newNode;
 	}
@@ -52,7 +53,7 @@ public:
 		// insert at pos 0
 		if (pos == 0)
 		{
-			Node<Type>* newNode = new Node<Type>(Value);
+			Node* newNode = new Node(Value);
 			newNode->NextNode = headNode;
 			headNode = newNode;
 
@@ -62,15 +63,15 @@ public:
 		{
 			unsigned int NodeCount = 0;
 
-			Node<Type>* intNode = headNode;
+			Node* intNode = headNode;
 
 			while (intNode)
 			{
 				NodeCount++;
 				if (NodeCount == pos)
 				{
-					Node<Type>* newNode = new Node<Type>(Value);
-					Node<Type>* followingNode = intNode->GetNextNode();
+					Node* newNode = new Node(Value);
+					Node* followingNode = intNode->GetNextNode();
 					intNode->NextNode = newNode;
 					newNode->NextNode = followingNode;
 
@@ -85,8 +86,8 @@ public:
 	//The value will be added in a sorted list in its corresponding position. > operator must be defined on the type
 	void InsertOnSortedList(const Type& value)
 	{
-		Node<Type>* p = headNode;
-		Node<Type>* q = nullptr;
+		Node* p = headNode;
+		Node* q = nullptr;
 
 		while (p && p->GetNodeValue() <= value)
 		{
@@ -95,7 +96,7 @@ public:
 		}
 
 		//If has a previous element, update 
-		Node<Type>* newNode = new Node<Type>(value);
+		Node* newNode = new Node(value);
 		newNode->NextNode = p;
 
 		if (p == headNode)
@@ -108,8 +109,8 @@ public:
 	//Deletes a value at a specific index starting by 0
 	bool Delete(const unsigned int index)
 	{
-		Node<Type>* p = headNode;
-		Node<Type>* q = nullptr;
+		Node* p = headNode;
+		Node* q = nullptr;
 		unsigned int internalIndex = 0;
 		while (p)
 		{
@@ -135,8 +136,8 @@ public:
 	//Returns if the list is sorted
 	bool IsSorted() 
 	{
-		Node<Type>* q = headNode;
-		Node<Type>* p = headNode->GetNextNode();
+		Node* q = headNode;
+		Node* p = headNode->GetNextNode();
 		
 		while (p)
 		{
@@ -153,8 +154,8 @@ public:
 	//Removes all nodes that have the specified value
 	void RemoveAllDuplicates(const Type& value)
 	{
-		Node<Type>* p = headNode;
-		Node<Type>* q = nullptr;
+		Node* p = headNode;
+		Node* q = nullptr;
 
 		while (p)
 		{
@@ -183,7 +184,7 @@ public:
 	//Display the content of the nodes
 	void Display()
 	{
-		Node<Type>* node = headNode;
+		Node* node = headNode;
 		int i = 0; 
 		
 		while (node)
@@ -198,7 +199,7 @@ public:
 	size_t Size()
 	{
 		size_t size = 0;
-		Node<Type>* node = headNode;
+		Node* node = headNode;
 
 		while (node)
 		{
@@ -212,7 +213,7 @@ public:
 	Type SumOfAllElements()
 	{
 		Type returnValue = 0;
-		Node<Type>* node = headNode;
+		Node* node = headNode;
 
 		while (node)
 		{
@@ -226,7 +227,7 @@ public:
 	//Gets the maximum value of all the nodes on the linked list. Operator > should be declared for the Type of the nodes of the Linked List. 
 	Type GetMaximumValue()
 	{
-		Node<Type>* node = headNode;
+		Node* node = headNode;
 		Type returnValue = node->value;
 
 		while (node)
@@ -243,7 +244,7 @@ public:
 	//Checks if a specific value is on the Linked List. 
 	bool HasValue(const Type& ValueToSearch)
 	{
-		Node<Type>* node = headNode;
+		Node* node = headNode;
 
 		while (node)
 		{
@@ -256,9 +257,9 @@ public:
 		return false; 
 	}
 	//Searches for the first node that has the parameter value and returns it if any. 
-	Node<Type>* SearchNode(const Type& ValueToSearch)
+	Node* SearchNode(const Type& ValueToSearch)
 	{
-		Node<Type>* intNode = headNode;
+		Node* intNode = headNode;
 
 		while (intNode)
 		{
@@ -274,9 +275,9 @@ public:
 	//Reverses the whole linked list
 	void Reverse()
 	{
-		Node<Type>* p = headNode;
-		Node<Type>* q = nullptr;
-		Node<Type>* r = nullptr;
+		Node* p = headNode;
+		Node* q = nullptr;
+		Node* r = nullptr;
 
 		while (p)
 		{
@@ -290,9 +291,9 @@ public:
 	}
 
 	//Joins two linked list in a single linked list
-	void Concatenate(LinkedList<Type>& LinkedListToMerge)
+	void Concatenate(LinkedList& LinkedListToMerge)
 	{
-		Node<Type>* currentNode = headNode;
+		Node* currentNode = headNode;
 		while (currentNode)
 		{
 			if (!currentNode->GetNextNode())
@@ -305,11 +306,11 @@ public:
 	}
 
 	//Merges the contents of a sorted list to the other list
-	void Merge(LinkedList<Type>& LinkedListToMerge)
+	void Merge(LinkedList& LinkedListToMerge)
 	{
-		Node<Type>* q = headNode;
-		Node<Type>* t = nullptr;
-		Node<Type>* p = LinkedListToMerge.headNode;
+		Node* q = headNode;
+		Node* t = nullptr;
+		Node* p = LinkedListToMerge.headNode;
 
 		while (q && p)
 		{
@@ -320,7 +321,7 @@ public:
 			}
 			else
 			{
-				Node<Type>* temp = p->GetNextNode();
+				Node* temp = p->GetNextNode();
 
 				if(t)
 					t->NextNode = p; 
@@ -339,11 +340,11 @@ public:
 
 	//Searches for the note associated with that value, and it puts it at the top of the linked list for quicker future access
 	//This uses a MoveToHead metodology
-	Node<Type>* SearchNodeMTH(const Type &ValueToSearch)
+	Node* SearchNodeMTH(const Type &ValueToSearch)
 	{
 		int i = 1; 
-		Node<Type>* intNode = headNode;
-		Node<Type>* q = nullptr;
+		Node* intNode = headNode;
+		Node* q = nullptr;
 
 		while (intNode)
 		{

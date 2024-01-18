@@ -1,42 +1,116 @@
 #pragma once
 
 template <typename T>
-class Node
+class DoubleLinkedListNode
 {
+	template <typename Type>
+	friend class DoubleLinkedList;
+
 public: 
-	Node(T& NodeValue) : value(NodeValue), previous(nullptr), next(nullptr) 
+	DoubleLinkedListNode(const T& NodeValue) : Value(NodeValue), PreviousNode(nullptr), NextNode(nullptr)
 	{ 
 		
 	} 
 
+	DoubleLinkedListNode<T>* GetPreviousNode() const { return PreviousNode; };
+	DoubleLinkedListNode<T>* GetNextNode() const { return NextNode; };
+
 private: 
-	T* previous; 
-	T value; 
-	T* next; 
+	DoubleLinkedListNode<T>* PreviousNode;
+	T Value; 
+	DoubleLinkedListNode<T>* NextNode;
 }; 
 
 //DoubleLinkedList class that has a collection of nodes that enables you to travel forward and backward
-template <typename T>
+template <typename Type>
 class DoubleLinkedList
 {
-public: 
+	using Node = DoubleLinkedListNode<Type>;
+
+public:
 	DoubleLinkedList() : headNode(nullptr), lastNode(nullptr) {}
 
 	//Add a node at the front of the list
 	void push_front(const Type& type)
 	{
-		Node<Type>* newNode = new Node<Type>(type);
+		Node* newNode = new Node(type);
 		newNode->NextNode = headNode;
 		headNode = newNode;
 
 		if (!lastNode)
 			lastNode = newNode;
 	}
+	
+	size_t Length()
+	{
+		size_t len = 0; 
 
+		Node* node = headNode; 
+		while (node)
+		{
+			len++;
+			node = node->GetNextNode();
+		}
+		return len;
+	}
+
+
+	//Insert a new node to the pos and with its Value. Returns if could insert it or not. Won't add it if the position is not available
+	void Insert(unsigned int pos, const Type& Value)
+	{
+		Node* p = headNode;
+		Node* q = nullptr;
+		Node* t;
+
+		if (pos < 0 || pos > Length())
+			return;
+
+		if (pos == 0)
+		{
+			t = new Node(Value);
+			t->PreviousNode = 0;
+			t->NextNode = headNode;
+			if (headNode)
+			{
+				headNode->PreviousNode = t;
+				headNode = t;
+			}
+			else
+				headNode = t;
+		}
+		else
+		{
+			for (int i = 1; i < pos; i++)
+				p = p->GetNextNode();
+
+			t = new Node(Value);
+
+			t->PreviousNode = p;
+			t->NextNode = p->GetNextNode();
+
+			if (p->GetNextNode())
+				p->GetNextNode()->PreviousNode = t;
+
+			p->NextNode = t;
+		}
+	}
+
+	void Display()
+	{
+		Node* node = headNode;
+		unsigned int numNodes = 0;
+		while (node)
+		{
+			std::cout << "Node " << numNodes << ": " << node->Value <<
+				" Previous pointing to: " << node->GetPreviousNode() << " and " "post pointing to: " << node->GetNextNode() << std::endl;
+			node = node->GetNextNode();
+			numNodes++;
+		}
+	}
 
 
 private:
-	Node<T>* headNode;
-	Node<T>* lastNode;
+	Node* headNode;
+	Node* lastNode;
 
 };
