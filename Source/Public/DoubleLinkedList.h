@@ -40,6 +40,35 @@ public:
 		if (!lastNode)
 			lastNode = newNode;
 	}
+
+	void push_back(const Type& value)
+	{
+		Node* q = headNode;
+		Node* p = nullptr;
+
+		if (!headNode)
+		{
+			Node* r = new Node(value);
+			headNode = r; 
+			return;
+		}
+
+		while (q)
+		{
+			p = q; 
+			q = q->GetNextNode();
+		}
+
+
+		if(p)
+		{
+			Node* r = new Node(value);
+			p->NextNode = r; 
+			r->PreviousNode = r; 
+		}
+		
+
+	}
 	
 	size_t Length()
 	{
