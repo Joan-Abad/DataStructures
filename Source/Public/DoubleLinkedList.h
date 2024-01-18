@@ -41,6 +41,7 @@ public:
 			lastNode = newNode;
 	}
 
+	//Addsa a value at the end of the double linked list
 	void push_back(const Type& value)
 	{
 		Node* q = headNode;
@@ -49,27 +50,25 @@ public:
 		if (!headNode)
 		{
 			Node* r = new Node(value);
-			headNode = r; 
+			headNode = r;
 			return;
 		}
 
 		while (q)
 		{
-			p = q; 
+			p = q;
 			q = q->GetNextNode();
 		}
 
-
-		if(p)
+		if (p)
 		{
 			Node* r = new Node(value);
-			p->NextNode = r; 
-			r->PreviousNode = r; 
+			p->NextNode = r;
+			r->PreviousNode = p;  // Fix this line
 		}
-		
-
 	}
 
+	//Deletes a node  at a specific index
 	bool Delete(int index)
 	{		
 		if (index < 0 || index > Length())
@@ -115,6 +114,7 @@ public:
 		}
 	}
 	
+	//Returns the length of the double linked list
 	size_t Length()
 	{
 		size_t len = 0; 
@@ -169,6 +169,24 @@ public:
 		}
 	}
 
+	//Reverses de double linked list
+	void Reverse()
+	{
+		Node* node = headNode; 
+		Node* temp = nullptr;
+		while (node)
+		{
+			temp = node->GetNextNode();
+			node->NextNode = node->GetPreviousNode();
+			node->PreviousNode = temp;
+			node = node->GetPreviousNode();
+
+			if (node && node->GetNextNode() == nullptr)
+				headNode = node;
+		}
+	}
+
+	//Displays the nodes of the double linked list
 	void Display()
 	{
 		Node* node = headNode;
