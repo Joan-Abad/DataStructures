@@ -24,6 +24,18 @@ private:
 
 public: 
 	LinkedList() : headNode(nullptr) {};
+
+	//Clears all the memory of the nodes allocated on the heap when this object is destroyed
+	~LinkedList()
+	{
+		Node<Type>* node = headNode;
+		while (node)
+		{
+			Node<Type>* tempNode = node->GetNextNode(); 
+			delete node; 
+			node = tempNode; 			
+		}
+	}
 	
 	//Add a node at the front of the list
 	void push_front(const Type& type)
@@ -301,7 +313,7 @@ public:
 	}
 
 	//Merges the contents of a sorted list to the other list
-	void Merge(const LinkedList<Type>& LinkedListToMerge)
+	void Merge(LinkedList<Type>& LinkedListToMerge)
 	{
 		Node<Type>* q = headNode;
 		Node<Type>* t = nullptr;
@@ -329,6 +341,8 @@ public:
 
 		if (!q && t->GetNodeValue() < p->GetNodeValue())
 			t->NextNode = p;
+
+		LinkedListToMerge.headNode = nullptr;
 	}
 
 	//Searches for the note associated with that value, and it puts it at the top of the linked list for quicker future access
@@ -358,8 +372,4 @@ public:
 
 		return nullptr;
 	}
-
-
-
-
 };
