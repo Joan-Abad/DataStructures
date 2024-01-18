@@ -286,18 +286,49 @@ public:
 	}
 
 	//Joins two linked list in a single linked list
-	void Concatenate(LinkedList<Type>& linkedListToConcatenate)
+	void Concatenate(LinkedList<Type>& LinkedListToMerge)
 	{
 		Node<Type>* currentNode = headNode;
 		while (currentNode)
 		{
 			if (!currentNode->GetNextNode())
 			{
-				currentNode->NextNode = linkedListToConcatenate.headNode;
+				currentNode->NextNode = LinkedListToMerge.headNode;
 				return;
 			}
 			currentNode = currentNode->GetNextNode();
 		}
+	}
+
+	//Merges the contents of a sorted list to the other list
+	void Merge(const LinkedList<Type>& LinkedListToMerge)
+	{
+		Node<Type>* q = headNode;
+		Node<Type>* t = nullptr;
+		Node<Type>* p = LinkedListToMerge.headNode;
+
+		while (q && p)
+		{
+			if (q->GetNodeValue() < p->GetNodeValue())
+			{
+				t = q; 
+				q = q->GetNextNode();
+			}
+			else
+			{
+				Node<Type>* temp = p->GetNextNode();
+
+				if(t)
+					t->NextNode = p; 
+
+				p->NextNode = q;
+				p = temp;
+			}
+
+		}
+
+		if (!q && t->GetNodeValue() < p->GetNodeValue())
+			t->NextNode = p;
 	}
 
 	//Searches for the note associated with that value, and it puts it at the top of the linked list for quicker future access
@@ -327,4 +358,8 @@ public:
 
 		return nullptr;
 	}
+
+
+
+
 };
