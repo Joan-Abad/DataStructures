@@ -46,14 +46,6 @@ public:
 		headNode = newNode;
 	}
 
-	//Adds a new value at the end of the list
-	void push_back(const Type& type)
-	{
-		//Create new node
-		Node<Type>* newNode = new Node<Type>(type);
-		newNode->NextNode = nullptr;
-	}
-
 	//Insert a new node to the pos and with its Value. Returns if could insert it or not. Won't add it if the position is not available
 	bool Insert(unsigned int pos, const Type& Value)
 	{
