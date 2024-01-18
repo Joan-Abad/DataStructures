@@ -69,6 +69,51 @@ public:
 		
 
 	}
+
+	bool Delete(int index)
+	{		
+		if (index < 0 || index > Length())
+			return -1;
+
+		Node* p = headNode; 
+		Node* q = nullptr; 
+		Node* r = nullptr; 
+
+		if (index == 0)
+		{
+			if (headNode)
+			{
+				Node* newHeadNode = headNode->GetNextNode();
+				
+				delete headNode;
+
+				headNode = newHeadNode;
+
+				if (newHeadNode)
+					newHeadNode->PreviousNode = nullptr; 
+				return true;
+			}
+			else
+				return false; 
+		}
+		else
+		{
+			for (int i = 0; i < index; i++)
+			{
+				r = q;
+				q = p;
+				p = p->GetNextNode();
+			}
+			Node* postNode = p->GetNextNode();
+
+			if (postNode)
+			{
+				q->NextNode = postNode;
+				postNode->PreviousNode = q;
+			}
+
+		}
+	}
 	
 	size_t Length()
 	{
