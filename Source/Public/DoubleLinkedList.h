@@ -5,20 +5,20 @@ class DoubleLinkedListNode
 {
 	template <typename Type>
 	friend class DoubleLinkedList;
-
+	using DllNode = DoubleLinkedListNode<T>;
 public: 
 	DoubleLinkedListNode(const T& NodeValue) : Value(NodeValue), PreviousNode(nullptr), NextNode(nullptr)
 	{ 
 		
 	} 
 
-	DoubleLinkedListNode<T>* GetPreviousNode() const { return PreviousNode; };
-	DoubleLinkedListNode<T>* GetNextNode() const { return NextNode; };
+	DllNode* GetPreviousNode() const { return PreviousNode; };
+	DllNode* GetNextNode() const { return NextNode; };
 
 private: 
-	DoubleLinkedListNode<T>* PreviousNode;
+	DllNode* PreviousNode;
 	T Value; 
-	DoubleLinkedListNode<T>* NextNode;
+	DllNode* NextNode;
 }; 
 
 //DoubleLinkedList class that has a collection of nodes that enables you to travel forward and backward
